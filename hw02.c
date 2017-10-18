@@ -1,29 +1,55 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 /*
 Prints the sizes and possible ranges of four integer data types. 
 */
 void print_int_ranges() {
-  // These are made up numbers that will not be correct on most systems!
-  // TODO correctly compute these values! 
-  int short_bytes = 2, int_bytes = 4, uint_bytes = 4, long_bytes = 4;
+  // TODO fill in missing values!
+  int short_bytes = 0;
+  int int_bytes = 0;
+  int uint_bytes = 0;
+  int long_bytes = 0;
 
-  long  short_min = -32768,       short_max = 32767;
-  long  int_min   = -2147483648L, int_max   = 2147483647L;
-  long  uint_min  = 0,            uint_max  = 1 << (int_bytes * 8 - 1);
-  long  long_min  = -2147483648L, long_max  = 2147483647L;
+  short_bytes = sizeof(short);
+  int_bytes = sizeof(int);
+  uint_bytes = sizeof(unsigned int);
+  long_bytes = sizeof(long);
+
+
+  short short_min = 0;
+  short short_max = 0;
+  int int_min = 0;
+  int int_max = 0;
+  unsigned int uint_min = 0;
+  unsigned int uint_max = 0;
+  long long_min = 1L << (long_bytes * 8 - 1);
+  long long_max = ~long_min;
+
+  short_min = -(1 << (short_bytes * 8 - 1));
+  short_max = ((1 << (short_bytes * 8 - 1)) - 1);
+  
+  int_min   = -(int_min << (int_bytes * 8 - 1));
+  int_max   = ((int_max << (int_bytes * 8 - 1)) - 1);
+  
+  uint_max  = ((1 << (uint_max * 8 - 1)) - 1);
+
+  long_min  = -(long_min << (long_bytes * 8 - 1));
+  long_max  = ((long_max << (long_bytes * 8 - 1)) - 1);
+
 
   // Keep these exact printf commands :)   
-  printf("short is %d bytes or %d bits and ranges from %ld to %ld\n",
+  printf("short is %d bytes or %d bits and ranges from %d to %d\n",
          short_bytes, short_bytes * 8, short_min, short_max);
-  printf("int is %d bytes or %d bits and ranges from %ld to %ld\n",
+  printf("int is %d bytes or %d bits and ranges from %d to %d\n",
          int_bytes, int_bytes * 8, int_min, int_max);
   printf("long is %d bytes or %d bits and ranges from %ld to %ld\n",
          long_bytes, long_bytes * 8, long_min, long_max);
-  printf("unsigned int is %d bytes or %d bits and ranges from %ld to %ld\n",
+  printf("unsigned int is %d bytes or %d bits and ranges from %u to %u\n",
          uint_bytes, uint_bytes * 8, uint_min, uint_max);
 }
+
 
 /*
 Takes in an integer value v and a integer bit index i
@@ -36,9 +62,25 @@ int is_bit_set(unsigned char v, unsigned char i) {
     return 0;
   }
 
-  /*
-  TODO your implementation goes here!
-  */
+  int x = 0;
+
+  int remainder_bitvalue;
+  int division_value;
+
+  while (x <= i) {
+    division_value = v/2;
+    remainder_bitvalue = v % 2;
+    x ++;
+    v = division_value;
+  }
+  
+  
+  if (remainder_bitvalue == 1) {
+    return 1;
+  }
+  else if (remainder_bitvalue == 0) {
+    return 0;
+  }
 
   return 0;
 }
@@ -48,6 +90,8 @@ Don't touch anything in main!
 */
 int main(int argc, char* argv[])
 {
+
+
   if (argc < 3) {
     fprintf(stderr, "Not enough arguments!\n");
     return -1;  
@@ -68,6 +112,5 @@ int main(int argc, char* argv[])
     default:
       fprintf(stderr, "is_bit_set returned an invalid value!\n");
   } 
-  
-  return 0;
+    return 0;
 }
